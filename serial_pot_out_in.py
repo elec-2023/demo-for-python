@@ -6,8 +6,9 @@ kill=0
 info=[]
 
 
-def test_function():
+def test_function(str):
     print('(test_function)I am test function')
+    print(f'(test_function)I received {str}')
     time.sleep(2)
     print('(test_function)I sleep 2s and wake up again')
     send_to_mv('(test_function)test function will stop soon')
@@ -23,12 +24,12 @@ while 1:
     data = ser.readline()
     print(data.decode().strip())
     try:
-        print('0')
-        target_function = globals()[data.decode().strip()]
-        print('3')
+        input=data.decode().strip().split(';')
+        target_function = globals()[input[0]]
+        print(input)
         if callable(target_function):
             # Execute the function in a separate thread
-            thread = threading.Thread(target=target_function)
+            thread = threading.Thread(target=target_function,args=("aa",))
             thread.start()
             print('2')
         else:
